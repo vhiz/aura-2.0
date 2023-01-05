@@ -1,0 +1,105 @@
+@import '../../app.scss';
+
+
+
+.rightbar {
+    @include themify($themes) {
+        flex: 3;
+        position: sticky;
+        top: 70px;
+        height: calc(100vh - 70px);
+        overflow: scroll;
+        background-color: themed('bgSoft');
+
+        @include mobile {
+            display: none;
+        }
+
+        @include tablet {
+            display: none;
+        }
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .contanier {
+            padding: 20px;
+            margin-bottom: 10px;
+
+            .item {
+                --webkit-box-shadow: 5px 5px 15px 8px rgba(0, 0, 0, 0.07);
+                box-shadow: 5px 5px 15px 8px rgba(0, 0, 0, 0.07);
+                padding: 20px;
+                margin-bottom: 20px;
+                background-color: themed('bg');
+                border-radius: 10px;
+
+                span {
+                    color: gray;
+                }
+
+                .user {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin: 20px 0px;
+
+                    .userInfo {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                        position: relative;
+
+                        img {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+
+                        .online {
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                            background-color: rgb(16, 202, 16);
+                            position: absolute;
+                            top: 0px;
+                            left: 30px;
+                        }
+
+                        p {
+                            color: themed('textColorSoft');
+                        }
+
+                        span {
+                            font-weight: 500;
+                            color: themed('textColor');
+                        }
+                    }
+
+                    .buttons {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+
+                        button {
+                            border: none;
+                            padding: 5px;
+                            color: white;
+                            cursor: pointer;
+
+                            &:first-child {
+                                background-color: rgb(112, 23, 196);
+                            }
+
+                            &:last-child {
+                                background-color: rgb(185, 9, 9);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

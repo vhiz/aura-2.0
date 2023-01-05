@@ -1,0 +1,95 @@
+.register {
+    height: 100vh;
+    background-color: rgb(238, 226, 205);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .card {
+        display: flex;
+        width: 50%;
+        border-radius: 10px;
+        background-color: rgb(255 255 255);
+        min-height: 600px;
+        overflow: hidden;
+        flex-direction: row-reverse;
+
+
+        .left {
+            flex: 1;
+            background: linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.575)), url('https://images.unsplash.com/photo-1503796964332-e25e282e390f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80') center;
+            background-size: cover;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            color: rgb(243, 216, 166);
+
+            h1 {
+                font-size: 200px;
+                line-height: 100px;
+                font-family: 'Passions Conflict', cursive;
+            }
+
+            p {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            span {
+                font-size: 14px;
+            }
+
+            button {
+                width: 50%;
+                padding: 10px;
+                border: none;
+                background-color: wheat;
+                color: black;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+        }
+
+        .right {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            background-color: rgb(232 240 254);
+            justify-content: center;
+
+            h1 {
+                color: rgb(109, 100, 100);
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+
+                input {
+                    border: none;
+                    border-bottom: 1px solid lightgray;
+                    padding: 20px 10px;
+                }
+
+                input:focus {
+                    outline: none;
+                }
+
+                button {
+                    width: 50%;
+                    padding: 10px;
+                    border: none;
+                    background-color: black;
+                    color: wheat;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
