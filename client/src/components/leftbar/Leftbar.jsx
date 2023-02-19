@@ -12,19 +12,25 @@ import Think from '../../assets/think.png'
 import Tutorial from '../../assets/tutorial.png'
 import Video from '../../assets/video.png'
 import Watch from '../../assets/watch.png'
-import { useContext } from 'react'
-import { AuthContext } from '../../context/authContext'
+import Avater from '../../assets/profile/avater.png'
+import { useQuery } from '@tanstack/react-query'
+import { makeRequest } from '../../axios'
+
 
 export default function Leftbar() {
 
-  const {currentUser} = useContext(AuthContext)
+  const { data, isLoading, } = useQuery(['users'], async () => {
+    const res = await makeRequest.get(`/users`)
+
+    return (res.data)
+  })
+
   return (
     <div className='leftbar'>
       <div className="contanier">
         <div className="menu">
           <div className="user">
-            <img src={currentUser.profilePic} alt="" />
-            <span>{currentUser.name}</span>
+            {isLoading ? "Loading" :<><img src={data.profilePic ? "/upload/" + data.profilePic : Avater} alt="" /><span>{data.name}</span></>}
           </div>
           <div className="item">
             <img src={Friend} alt="" />
@@ -69,7 +75,7 @@ export default function Leftbar() {
         </div>
         <hr />
         <div className="menu">
-        <span>Others</span>
+          <span>Others</span>
           <div className="item">
             <img src={Fund} alt="" />
             <span>Fund</span>

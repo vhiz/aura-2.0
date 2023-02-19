@@ -10,27 +10,59 @@ import './app.scss'
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkMode";
 import { AuthContext } from "./context/authContext";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import Mensenger from "./pages/mensenger/Mensenger";
+import Conversation from "./components/conversations/Conversation";
+import Online from "./components/online/Online";
 
 function App() {
-  const {currentUser} = useContext(AuthContext)
+  const { currentUser } = useContext(AuthContext)
 
-  const {darkMode} = useContext(DarkModeContext)
-  
+  const { darkMode } = useContext(DarkModeContext)
+  const queryClient = new QueryClient()
+
 
   const Layout = () => {
     return (
-      <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
-        <Navbar />
-        <div style={{ display: 'flex' }}>
-          <Leftbar />
-          <div style={{ flex: 6 }}>
-            <Outlet />
+      <QueryClientProvider client={queryClient}>
+
+        <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
+          <Navbar />
+          <div style={{ display: 'flex' }}>
+            <Leftbar />
+            <div style={{ flex: 6 }}>
+              <Outlet />
+            </div>
+            <Rightbar />
           </div>
-          <Rightbar />
         </div>
-      </div>
+      </QueryClientProvider>
     )
   }
+
+
+
+  const Layout2 = () => {
+    return (
+      <QueryClientProvider client={queryClient}>
+
+        <div className={`theme-${darkMode ? 'dark' : 'light'}`}>
+          <Navbar />
+          <div style={{ display: 'flex' }}>
+            <Conversation />
+            <div style={{ flex: 6, }}>
+              <Outlet />
+            </div>
+            <Online />
+          </div>
+        </div>
+      </QueryClientProvider>
+    )
+  }
+
 
 
   const router = createBrowserRouter([
@@ -55,6 +87,16 @@ function App() {
     {
       path: '/register',
       element: <Register />
+    },
+    {
+      path: '/',
+      element: (currentUser ? <Layout2 /> : <Navigate to='/login' />),
+      children:[
+        {
+          path:"/mensenger",
+          element: <Mensenger/>
+        }
+      ]
     }
   ])
   return (

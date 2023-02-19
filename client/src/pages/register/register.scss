@@ -1,6 +1,8 @@
+@import '../../app.scss';
+
 .register {
     height: 100vh;
-    background-color: rgb(238, 226, 205);
+    background-color: rgb(255, 255, 255);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,9 +17,23 @@
         flex-direction: row-reverse;
 
 
+        @include mobile {
+            width: 400px;
+            flex-direction: column;
+
+        }
+
+        @include tablet {
+            min-height: 400px;
+            width: 400px;
+            flex-direction: column;
+            width: 80%;
+        }
+
+
         .left {
             flex: 1;
-            background: linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.575)), url('https://images.unsplash.com/photo-1503796964332-e25e282e390f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80') center;
+            background: linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.575)), url('../../assets/profile/register.avif') center;
             background-size: cover;
             padding: 50px;
             display: flex;
@@ -32,6 +48,11 @@
             }
 
             p {
+
+                @include mobile {
+                    display: none;
+                }
+
                 margin-top: 10px;
                 margin-bottom: 10px;
             }

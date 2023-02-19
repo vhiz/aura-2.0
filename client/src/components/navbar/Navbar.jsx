@@ -11,12 +11,21 @@ import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import { DarkModeContext } from '../../context/darkMode';
 import { AuthContext } from '../../context/authContext';
+import Avater from '../../assets/profile/avater.png'
+import { useQuery } from '@tanstack/react-query';
+import { makeRequest } from '../../axios';
 
 
 export default function Navbar() {
 
     const { toggle, darkMode } = useContext(DarkModeContext)
     const { currentUser } = useContext(AuthContext)
+
+    const { data, isLoading, } = useQuery(['users'], async () => {
+        const res = await makeRequest.get(`/users`)
+
+        return (res.data)
+    })
     return (
         <div className='navbar'>
             <div className="left">
@@ -32,13 +41,13 @@ export default function Navbar() {
                 </div>
             </div>
             <div className="right">
-                <Person2OutlinedIcon className='icon'/>
-                <MailOutlinedIcon className='icon'/>
-                <NotificationsNoneOutlinedIcon className='icon'/>
-                <Link to={`profile/${currentUser.id}`} style={{ textDecoration: 'none' }}>
+                <Person2OutlinedIcon className='icon' />
+                <MailOutlinedIcon className='icon' />
+                <NotificationsNoneOutlinedIcon className='icon' />
+                <Link to={`profile/${currentUser._id}`} style={{ textDecoration: 'none' }}>
                     <div className="user">
-                        <img src={currentUser.profilePic} alt="" />
-                        <span>{currentUser.name}</span>
+                        {isLoading ? "Loading" : (<img src={data.profilePic ? '/upload/'+data.profilePic : Avater} alt="" />)}
+                        {isLoading ? "Loading..." :<span>{data.name}</span>}
                     </div>
                 </Link>
             </div>

@@ -1,3 +1,5 @@
+@import '../../app.scss';
+
 .login {
     height: 100vh;
     background-color: rgb(238, 226, 205);
@@ -13,16 +15,32 @@
         min-height: 600px;
         overflow: hidden;
 
+        @include mobile{
+            min-height: 400px;
+            width: 400px;
+            flex-direction: column;
+
+        }
+
+        @include tablet{
+            min-height: 400px;
+            width: 400px;
+            flex-direction: column;
+            width: 80%;
+        }
+
 
         .left {
             flex: 1;
-            background: linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.575)), url('https://images.unsplash.com/photo-1517999144091-3d9dca6d1e43?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80') center;
+            background: linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.575)), url('../../assets/profile/register.avif') center;
             background-size: cover;
             padding: 50px;
             display: flex;
             flex-direction: column;
             gap: 30px;
             color: rgb(243, 216, 166);
+
+            
             
             h1{
                 font-size: 100px;
@@ -30,7 +48,9 @@
             }
 
             p{
-
+                @include mobile{
+                    display: none;
+                }
             }
 
             span{
