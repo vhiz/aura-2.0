@@ -17,13 +17,20 @@ import { makeRequest } from "../../axios";
 
 export default function Navbar() {
   const { toggle, darkMode } = useContext(DarkModeContext);
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, logout } = useContext(AuthContext);
   const [q, setQ] = useState("");
   const navigate = useNavigate();
 
   const handleClick = (e) => {
     e.preventDefault();
     navigate(`/search?q=${q}`);
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+
+    logout();
+    navigate("/");
   };
 
   const { data, isLoading } = useQuery(["users"], async () => {
@@ -65,14 +72,13 @@ export default function Navbar() {
             {isLoading ? (
               "Loading"
             ) : (
-              <img
-                src={data.profilePic ? "/upload/" + data.profilePic : Avater}
-                alt=""
-              />
+              <img src={data.profilePic || Avater} alt="" />
             )}
             {isLoading ? "Loading..." : <span>{data.name}</span>}
           </div>
         </Link>
+
+        <button onClick={handleLogout}>Logout</button>
       </div>
     </div>
   );

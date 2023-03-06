@@ -45,14 +45,7 @@ export default function Comments({ postId }) {
   return (
     <div className="comments">
       <div className="write">
-        <img
-          src={
-            currentUser.profilePic
-              ? "/upload/" + currentUser.profilePic
-              : Avater
-          }
-          alt=""
-        />
+        <img src={currentUser.profilePic || Avater} alt="" />
         <input
           type="text"
           placeholder="Comment......."

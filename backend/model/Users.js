@@ -17,7 +17,6 @@ const userSchema = new Schema({
     },
     password: {
         type: String,
-        require: true,
     },
     profilePic: {
         type: String,
@@ -37,7 +36,6 @@ const userSchema = new Schema({
     },
     phoneno: {
         type: Number,
-        require: true
     },
     followers: {
         type: Array,

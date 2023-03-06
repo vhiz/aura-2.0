@@ -30,10 +30,7 @@ export default function Comment({ comment }) {
               <CircularProgress />
             ) : (
               <>
-                <img
-                  src={data.profilePic ? "upload/" + data.profilePic : Avater}
-                  alt=""
-                />
+                <img src={data.profilePic || Avater} alt="" />
                 <div className="info">
                   <span>{data.name}</span>
                   <p>{comment.desc}</p>

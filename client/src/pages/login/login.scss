@@ -107,6 +107,23 @@
                     cursor: pointer;
                 }
             }
+
+            .google{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+                font-size: 15px;
+                border: 1px solid rgb(211, 199, 199);
+                padding: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+
+                img{
+                    height: 20px;
+                    width: 20px;
+                }
+            }
         }
     }
 }

@@ -64,16 +64,8 @@ export default function Profile() {
       ) : (
         <>
           <div className="images">
-            <img
-              src={data.coverPic ? "/upload/" + data.coverPic : Cover}
-              alt=""
-              className="cover"
-            />
-            <img
-              src={data.profilePic ? "/upload/" + data.profilePic : Avater}
-              alt=""
-              className="profile"
-            />
+            <img src={data.coverPic || Cover} alt="" className="cover" />
+            <img src={data.profilePic || Avater} alt="" className="profile" />
           </div>
           <div className="profileContanier">
             <div className="uInfo">

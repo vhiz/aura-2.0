@@ -1,36 +1,41 @@
-import './leftbar.scss'
-import Friend from '../../assets/friends.png'
-import Coures from '../../assets/course.png'
-import Event from '../../assets/event.png'
-import Fund from '../../assets/fund.png'
-import Gallery from '../../assets/gallery.png'
-import Game from '../../assets/game.png'
-import Groups from '../../assets/groups.png'
-import Market from '../../assets/market.png'
-import Message from '../../assets/message.png'
-import Think from '../../assets/think.png'
-import Tutorial from '../../assets/tutorial.png'
-import Video from '../../assets/video.png'
-import Watch from '../../assets/watch.png'
-import Avater from '../../assets/profile/avater.png'
-import { useQuery } from '@tanstack/react-query'
-import { makeRequest } from '../../axios'
-
+import "./leftbar.scss";
+import Friend from "../../assets/friends.png";
+import Coures from "../../assets/course.png";
+import Event from "../../assets/event.png";
+import Fund from "../../assets/fund.png";
+import Gallery from "../../assets/gallery.png";
+import Game from "../../assets/game.png";
+import Groups from "../../assets/groups.png";
+import Market from "../../assets/market.png";
+import Message from "../../assets/message.png";
+import Think from "../../assets/think.png";
+import Tutorial from "../../assets/tutorial.png";
+import Video from "../../assets/video.png";
+import Watch from "../../assets/watch.png";
+import Avater from "../../assets/profile/avater.png";
+import { useQuery } from "@tanstack/react-query";
+import { makeRequest } from "../../axios";
 
 export default function Leftbar() {
+  const { data, isLoading } = useQuery(["users"], async () => {
+    const res = await makeRequest.get(`/users`);
 
-  const { data, isLoading, } = useQuery(['users'], async () => {
-    const res = await makeRequest.get(`/users`)
-
-    return (res.data)
-  })
+    return res.data;
+  });
 
   return (
-    <div className='leftbar'>
+    <div className="leftbar">
       <div className="contanier">
         <div className="menu">
           <div className="user">
-            {isLoading ? "Loading" :<><img src={data.profilePic ? "/upload/" + data.profilePic : Avater} alt="" /><span>{data.name}</span></>}
+            {isLoading ? (
+              "Loading"
+            ) : (
+              <>
+                <img src={data.profilePic || Avater} alt="" />
+                <span>{data.name}</span>
+              </>
+            )}
           </div>
           <div className="item">
             <img src={Friend} alt="" />
@@ -91,5 +96,5 @@ export default function Leftbar() {
         </div>
       </div>
     </div>
-  )
+  );
 }

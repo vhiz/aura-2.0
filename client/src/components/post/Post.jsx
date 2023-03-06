@@ -63,10 +63,7 @@ export default function Post({ post, userId }) {
               <CircularProgress />
             ) : (
               <>
-                <img
-                  src={data.profilePic ? "/upload/" + data.profilePic : Avater}
-                  alt=""
-                />
+                <img src={data.profilePic || Avater} alt="" />
                 <div className="details">
                   <Link
                     to={`/profile/${post.userId}`}
@@ -85,7 +82,7 @@ export default function Post({ post, userId }) {
         </div>
         <div className="content">
           <p>{post.desc}</p>
-          <img src={"./upload/" + post?.img} alt="" />
+          <img src={post?.img} alt="" />
         </div>
         <div className="info">
           <div className="item">
