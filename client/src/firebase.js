@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "video-de607",
   storageBucket: "video-de607.appspot.com",
   messagingSenderId: "941135156130",
-  appId: "1:941135156130:web:fcabab122af77a9aa258fb",
+  appId: "1:941135156130:web:2fc78f20f0040d4ca258fb"
 };
 
 const app = initializeApp(firebaseConfig);
