@@ -1,0 +1,42 @@
+@import "../../app.scss";
+.message {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  @include themify($themes) {
+    .top {
+      display: flex;
+      gap: 10px;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      p {
+        padding: 10px;
+        border-radius: 20px;
+        background-color: blue;
+        color: white;
+        max-width: 300px;
+      }
+    }
+
+    .bottom {
+      font-size: 14px;
+      color: themed("textColorSoft");
+    }
+  }
+
+  &.own {
+    align-items: flex-end;
+
+    .top {
+      p {
+        background-color: lightgray;
+        color: black;
+      }
+    }
+  }
+}

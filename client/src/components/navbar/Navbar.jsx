@@ -62,7 +62,12 @@ export default function Navbar() {
       </div>
       <div className="right">
         <Person2OutlinedIcon className="icon" />
-        <MailOutlinedIcon className="icon" />
+        <Link
+          to={"/mesenger"}
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <MailOutlinedIcon className="icon" />
+        </Link>
         <NotificationsNoneOutlinedIcon className="icon" />
         <Link
           to={`profile/${currentUser._id}`}

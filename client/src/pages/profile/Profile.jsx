@@ -23,13 +23,13 @@ export default function Profile() {
   const { currentUser } = useContext(AuthContext);
   const [openUpdate, setOpenUpdate] = useState(false);
 
-  const { isLoading, data } = useQuery(["user"], async () => {
+  const { isLoading, data } = useQuery(["user", userId], async () => {
     const res = await makeRequest.get(`/users/find/${userId}`);
     return res.data;
   });
 
   const { isLoading: relationshipIsLoading, data: relationshipData } = useQuery(
-    ["relationship"],
+    ["relationship", userId],
     async () => {
       const res = await makeRequest.get(
         `/relationships?followedUserId=${userId}`
@@ -53,9 +53,26 @@ export default function Profile() {
     }
   );
 
+  const mutationC = useMutation(
+    (newConversation) => {
+      return makeRequest.post("/conversations", newConversation);
+    },
+    {
+      onSuccess: () => {
+        // Invalidate and refetch
+        queryClient.invalidateQueries(["conversation"]);
+      },
+    }
+  );
+
   const handleFollow = async (e) => {
     e.preventDefault();
     mutation.mutate(relationshipData.includes(currentUser._id));
+
+    const newConversation ={
+      receiverId:userId
+    }
+    mutationC.mutate(newConversation)
   };
   return (
     <div className="profile">

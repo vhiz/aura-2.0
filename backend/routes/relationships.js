@@ -1,9 +1,13 @@
-const router = require('express').Router()
+const router = require("express").Router();
 
-const {getRelationships, addRelationships, deletRelationships} = require('../controllers/relationship')
+const {
+  getRelationships,
+  addRelationships,
+  deletRelationships,
+} = require("../controllers/relationship");
 
-router.get('/', getRelationships)
-router.post('/', addRelationships)
-router.delete('/', deletRelationships)
+router.get("/", getRelationships);
+router.post("/", addRelationships);
+router.delete("/", deletRelationships);
 
-module.exports = router
+module.exports = router;

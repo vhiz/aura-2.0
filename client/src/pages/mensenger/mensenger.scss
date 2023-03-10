@@ -1,67 +1,92 @@
-@import '../../app.scss';
+@import "../../app.scss";
 
+.mensenger {
+  @include themify($themes) {
+    height: max-content;
+    background-color: themed("bg");
+    display: flex;
 
-.chatBox {
-    @include themify($themes) {
-        background-color: themed('bgSoft');
-        padding: 20px 70px;
-        min-height: 100vh;
+    .chatMenu {
+      flex: 3.5;
+      .wrapper {
+        padding: 10px;
+        height: calc(100vh - 70px);
 
-        @include mobile {
-            padding: 10px;
+        input {
+          width: 90%;
+          padding: 10px 0;
+          border: none;
+          border-bottom: 1px solid themed("border");
+          background-color: transparent;
+          color: themed("textColor");
+          outline: none;
         }
-
-        @include tablet {
-            padding: 20px;
-        }
-
-        .chatBoxWrapper{
-            height: 85vh;
-            padding-left: 10px;
-            padding-right: 10px;
-        }
-
-        .chatBoxWrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-
-            .chatBoxTop {
-                height: 100%;
-                overflow-y: scroll;
-                padding-right: 10px;
-            }
-
-            .chatBoxBottom {
-                margin-top: 5px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-
-                textarea {
-                    width: 90%;
-                    height: 100%;
-                    padding: 10px 0;
-                    border: none;
-                    border-radius: 5px;
-                    background-color: black;
-                    border-bottom: 1px solid gray;
-                    color: themed('bg');
-                }
-
-                button{
-                    width: 70px;
-                    height: 40px;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    background-color: rgb(75, 75, 241);
-                    color: white;
-                }
-            }
-        }
-
+      }
     }
+
+    .chatBox {
+      flex: 5.5;
+      .wrapper {
+        padding: 10px;
+        height: calc(100vh - 70px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+
+        .wrapperTop {
+          height: 100%;
+          overflow-y: scroll;
+          padding-right: 10px;
+
+          &::-webkit-scrollbar {
+            width: 0;
+          }
+        }
+
+        .wrapperBottom {
+          margin-top: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          textarea {
+            width: 80%;
+            height: 90px;
+            padding: 10px;
+            background-color: transparent;
+            color: themed("textColor");
+            outline: none;
+          }
+
+          button {
+            border: none;
+            width: 70px;
+            height: 40px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: teal;
+            color: white;
+          }
+        }
+
+        span {
+          position: absolute;
+          top: 10%;
+          font-size: 50px;
+          color: rgba(99, 89, 89, 0.767);
+          text-align: center;
+          cursor: default;
+        }
+      }
+    }
+
+    .chatOnline {
+      flex: 3;
+      .wrapper {
+        padding: 10px;
+        height: calc(100vh - 70px);
+      }
+    }
+  }
 }

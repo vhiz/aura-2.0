@@ -15,29 +15,27 @@ import "./app.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkMode";
 import { AuthContext } from "./context/authContext";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Search from "./pages/search/Search";
+import Mensenger from "./pages/mensenger/Mensenger";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
 
   const { darkMode } = useContext(DarkModeContext);
-  const queryClient = new QueryClient();
+ 
 
   const Layout = () => {
     return (
-      <QueryClientProvider client={queryClient}>
-        <div className={`theme-${darkMode ? "dark" : "light"}`}>
-          <Navbar />
-          <div style={{ display: "flex" }}>
-            <Leftbar />
-            <div style={{ flex: 6 }}>
-              <Outlet />
-            </div>
-            <Rightbar />
+      <>
+        <Navbar />
+        <div style={{ display: "flex" }}>
+          <Leftbar />
+          <div style={{ flex: 6 }}>
+            <Outlet />
           </div>
+          <Rightbar />
         </div>
-      </QueryClientProvider>
+      </>
     );
   };
 
@@ -68,10 +66,16 @@ function App() {
       path: "/register",
       element: <Register />,
     },
+    {
+      path: "/mesenger",
+      element: currentUser ? <Mensenger /> : <Navigate to={"/login"} />,
+    },
   ]);
   return (
-    <div>
-      <RouterProvider router={router} />
+    <div className={`theme-${darkMode ? "dark" : "light"}`}>
+      <div className="app">
+        <RouterProvider router={router} />
+      </div>
     </div>
   );
 }

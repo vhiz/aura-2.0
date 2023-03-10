@@ -6,7 +6,7 @@ import { CircularProgress } from "@mui/material";
 import Error from "@mui/icons-material/Error";
 
 export default function Posts({ userId }) {
-  const { isLoading, error, data } = useQuery(["posts"], async () => {
+  const { isLoading, error, data } = useQuery(["posts", userId], async () => {
     const res = userId
       ? await makeRequest.get(`/posts/${userId}`)
       : await makeRequest.get(`/posts`);

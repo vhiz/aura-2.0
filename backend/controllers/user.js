@@ -14,6 +14,28 @@ const getUser = async (req, res) => {
   res.status(200).send(other);
 };
 
+const getFriends = async (req, res) => {
+  try {
+    const user = await Users.findById(req.params.userId);
+
+    const friends = await Promise.all(
+      user.followings.map((friendId) => {
+        return Users.findById(friendId);
+      })
+    );
+
+    let friendlist = [];
+    friends.map((friend) => {
+      const { _id, username, profilePic } = friend;
+      friendlist.push({ _id, username, profilePic });
+    });
+
+    res.status(200).json(friendlist);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 const updateUser = async (req, res) => {
   const token = req.cookies.acessToken;
   if (!token) return res.status(401).json("Not verified");
@@ -59,4 +81,14 @@ const search = async (req, res) => {
   }
 };
 
-module.exports = { getUser, updateUser, getMe, search };
+const suggested = async (req, res) => {
+  try {
+    const users = await Users.aggregate([{ $sample: { size: 3 } }]);
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(400).json(error.message);
+  }
+};
+
+module.exports = { getUser, updateUser, getMe, search, suggested , getFriends};
