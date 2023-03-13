@@ -5,13 +5,33 @@ import { Link } from "react-router-dom";
 import { makeRequest } from "../../axios";
 import "./rightbar.scss";
 import Avater from "../../assets/profile/avater.png";
+import Online from "../online/Online";
+import { useContext, useEffect, useRef, useState } from "react";
+import { io } from "socket.io-client";
+import { AuthContext } from "../../context/authContext";
 
 export default function Rightbar() {
+  const { currentUser } = useContext(AuthContext);
   const { error, data, isLoading } = useQuery(["sugeted"], async () => {
     const res = await makeRequest.get(`/users/suggested`);
 
     return res.data;
   });
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io("https://auraapi.onrender.com");
+  }, []);
+
+  useEffect(() => {
+    socket.current.emit("addUser", currentUser._id);
+    socket.current.on("getUsers", (users) => {
+      setOnlineUsers(
+        currentUser.followings.filter((f) => users.some((u) => u.userId === f))
+      );
+    });
+  }, [currentUser]);
   return (
     <div className="rightbar">
       <div className="contanier">
@@ -45,59 +65,9 @@ export default function Rightbar() {
           )}
         </div>
 
-
         <div className="item">
           <span>Online friends</span>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://wallpapers.com/images/high/sorrowful-peter-griffin-pfi29qp59bmvsbcj.webp"
-                alt=""
-              />
-              <div className="online" />
-              <span>Peter Grifin</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://c4.wallpaperflare.com/wallpaper/486/223/659/family-guy-lois-griffin-wallpaper-preview.jpg"
-                alt=""
-              />
-              <div className="online" />
-              <span>Lois Griffin</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQC0FXGF5pmRyi1GGu8Bbbuw3Gbio_EPsTUnA&usqp=CAU"
-                alt=""
-              />
-              <div className="online" />
-              <span>Marge Simpon</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://images2.alphacoders.com/467/thumbbig-467171.webp"
-                alt=""
-              />
-              <div className="online" />
-              <span>Maggie Simpson</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userInfo">
-              <img
-                src="https://www.pngitem.com/pimgs/m/93-937041_chris-griffin-by-mighty355-chris-family-guy-costume.png"
-                alt=""
-              />
-              <div className="online" />
-              <span>Chris Griffin</span>
-            </div>
-          </div>
+          <Online onlineUsers={onlineUsers} />
         </div>
       </div>
     </div>

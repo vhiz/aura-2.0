@@ -42,7 +42,7 @@ export default function Mensenger() {
   //websocket
 
   useEffect(() => {
-    socket.current = io("http://localhost:3001");
+    socket.current = io("https://auraapi.onrender.com");
 
     socket.current.on("getMessage", (data) => {
       setArravial({
