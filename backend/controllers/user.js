@@ -37,23 +37,23 @@ const getFriends = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const token = req.cookies.acessToken;
-  if (!token) return res.status(401).json("Not verified");
+  // const token = req.cookies.acessToken;
+  // if (!token) return res.status(401).json("Not verified");
 
-  verify(token, process.env.TOKEN, async (err, userInfo) => {
-    if (err) return res.status(403).json("token is not verified");
+  // verify(token, process.env.TOKEN, async (err, userInfo) => {
+  //   if (err) return res.status(403).json("token is not verified");
 
     if (req.body.password) {
       const salt = genSaltSync(10);
       req.pody.password = hashSync(req.body.password, salt);
     }
 
-    await Users.findByIdAndUpdate(userInfo.id, {
+    await Users.findByIdAndUpdate(req.params.id, {
       $set: req.body,
     });
 
     res.status(204).json("updated");
-  });
+  // });
 };
 
 const getMe = async (req, res) => {

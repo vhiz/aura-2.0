@@ -7,7 +7,7 @@ const {
 } = require("../controllers/relationship");
 
 router.get("/", getRelationships);
-router.post("/", addRelationships);
-router.delete("/", deletRelationships);
+router.post("/:id", addRelationships);
+router.delete("/:id", deletRelationships);
 
 module.exports = router;

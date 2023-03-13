@@ -14,7 +14,7 @@ router.get("/friends/:userId", getFriends);
 
 router.get("/", getMe);
 
-router.put("/", updateUser);
+router.put("/:id", updateUser);
 
 router.get("/search", search);
 

@@ -2,23 +2,19 @@ import "./stories.scss";
 import Avater from "../../assets/profile/avater.png";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/authContext";
 
 export default function Stories() {
   const [file, setFile] = useState(null);
-
-  const { data, isLoading } = useQuery(["users"], async () => {
-    const res = await makeRequest.get(`/users`);
-
-    return res.data;
-  });
+  const { currentUser } = useContext(AuthContext);
 
   const {
     data: storyData,
     isLoading: storyLoading,
     error,
-  } = useQuery(["stories"], async () => {
-    const res = await makeRequest.get(`/story`);
+  } = useQuery(["stories", currentUser], async () => {
+    const res = await makeRequest.get(`/story/${currentUser._id}`);
 
     return res.data;
   });
@@ -57,14 +53,9 @@ export default function Stories() {
   return (
     <div className="stories">
       <div className="story">
-        {isLoading ? (
-          "Loading"
-        ) : (
-          <>
-            <img src={data.profilePic || Avater} alt="" />
-            <span>{data.name}</span>
-          </>
-        )}
+        <img src={currentUser.profilePic || Avater} alt="" />
+        <span>{currentUser.name}</span>
+
         <button>+</button>
       </div>
       {error

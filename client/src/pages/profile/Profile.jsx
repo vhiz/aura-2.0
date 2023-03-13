@@ -43,8 +43,10 @@ export default function Profile() {
   const mutation = useMutation(
     (following) => {
       if (following)
-        return makeRequest.delete(`/relationships?userId=${userId}`);
-      return makeRequest.post(`/relationships`, { userId });
+        return makeRequest.delete(
+          `/relationships/${currentUser._id}?userId=${userId}`
+        );
+      return makeRequest.post(`/relationships/${currentUser._id}`, { userId });
     },
     {
       onSuccess: () => {
@@ -55,7 +57,10 @@ export default function Profile() {
 
   const mutationC = useMutation(
     (newConversation) => {
-      return makeRequest.post("/conversations", newConversation);
+      return makeRequest.post(
+        `/conversations/${currentUser._id}`,
+        newConversation
+      );
     },
     {
       onSuccess: () => {
@@ -69,10 +74,10 @@ export default function Profile() {
     e.preventDefault();
     mutation.mutate(relationshipData.includes(currentUser._id));
 
-    const newConversation ={
-      receiverId:userId
-    }
-    mutationC.mutate(newConversation)
+    const newConversation = {
+      receiverId: userId,
+    };
+    mutationC.mutate(newConversation);
   };
   return (
     <div className="profile">
@@ -90,16 +95,16 @@ export default function Profile() {
                 <a href="http://facbook.com">
                   <img src={Facbook} alt="" />
                 </a>
-                <a href="http://facbook.com">
+                <a href="http://instagram.com">
                   <img src={Instagram} alt="" />
                 </a>
-                <a href="http://facbook.com">
+                <a href="http://twitter.com">
                   <img src={Twitter} alt="" />
                 </a>
-                <a href="http://facbook.com">
+                <a href="http://linkedin.com">
                   <img src={Linkedin} alt="" />
                 </a>
-                <a href="http://facbook.com">
+                <a href="http://pintrest.com">
                   <img src={Pintrest} alt="" />
                 </a>
               </div>

@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const {addStory, getStory} = require('../controllers/story')
 
-router.get('/', getStory)
+router.get('/:id', getStory)
 
-router.post('/', addStory)
+router.post('/:id', addStory)
 
 module.exports = router

@@ -4,5 +4,5 @@ const {getComments, createComment} = require('../controllers/comment')
 
 router.get('/', getComments)
 
-router.post('/', createComment)
+router.post('/:id', createComment)
 module.exports = router

@@ -26,7 +26,7 @@ export default function Comments({ postId }) {
 
   const mutation = useMutation(
     (newComment) => {
-      return makeRequest.post("/comments", newComment);
+      return makeRequest.post(`/comments/${currentUser._id}`, newComment);
     },
     {
       onSuccess: () => {

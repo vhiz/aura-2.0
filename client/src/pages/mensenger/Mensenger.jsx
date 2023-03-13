@@ -22,7 +22,7 @@ export default function Mensenger() {
   const { error, data, isLoading } = useQuery(
     ["conversation", currentUser],
     async () => {
-      const res = await makeRequest.get(`/conversations/`);
+      const res = await makeRequest.get(`/conversations/${currentUser._id}`);
 
       return res.data;
     }
@@ -72,7 +72,7 @@ export default function Mensenger() {
 
   const mutation = useMutation(
     (newMessage) => {
-      return makeRequest.post("/message", newMessage);
+      return makeRequest.post(`/message/${currentUser._id}`, newMessage);
     },
     {
       onSuccess: () => {

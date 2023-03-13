@@ -12,8 +12,6 @@ import { useContext, useState } from "react";
 import { DarkModeContext } from "../../context/darkMode";
 import { AuthContext } from "../../context/authContext";
 import Avater from "../../assets/profile/avater.png";
-import { useQuery } from "@tanstack/react-query";
-import { makeRequest } from "../../axios";
 
 export default function Navbar() {
   const { toggle, darkMode } = useContext(DarkModeContext);
@@ -33,11 +31,6 @@ export default function Navbar() {
     navigate("/");
   };
 
-  const { data, isLoading } = useQuery(["users"], async () => {
-    const res = await makeRequest.get(`/users`);
-
-    return res.data;
-  });
   return (
     <div className="navbar">
       <div className="left">
@@ -74,12 +67,9 @@ export default function Navbar() {
           style={{ textDecoration: "none" }}
         >
           <div className="user">
-            {isLoading ? (
-              "Loading"
-            ) : (
-              <img src={data.profilePic || Avater} alt="" />
-            )}
-            {isLoading ? "Loading..." : <span>{data.name}</span>}
+            <img src={currentUser.profilePic || Avater} alt="" />
+
+            <span>{currentUser.name}</span>
           </div>
         </Link>
 

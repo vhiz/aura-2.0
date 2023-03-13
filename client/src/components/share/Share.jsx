@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/authContext";
 import Friend from "../../assets/friends.png";
 import Image from "../../assets/img.png";
 import Map from "../../assets/map.png";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 import Avater from "../../assets/profile/avater.png";
 import {
@@ -19,12 +19,13 @@ export default function Share() {
   const [info, setInfo] = useState({});
   const [img, setImg] = useState("");
   const [imgPrec, setImgPerc] = useState(0);
+  const { currentUser } = useContext(AuthContext);
 
   const queryClient = new useQueryClient();
 
   const mutation = useMutation(
     (newPost) => {
-      return makeRequest.post("/posts", newPost);
+      return makeRequest.post(`/posts/${currentUser._id}`, newPost);
     },
     {
       onSuccess: () => {
@@ -34,12 +35,6 @@ export default function Share() {
     }
   );
 
-  const { data, isLoading } = useQuery(["users"], async () => {
-    const res = await makeRequest.get(`/users`);
-
-    return res.data;
-  });
-
   const handelClick = async (e) => {
     e.preventDefault();
     const newPost = {
@@ -48,8 +43,8 @@ export default function Share() {
 
     mutation.mutate(newPost);
     setImg(null);
-    setImgPerc(0)
-    setInfo(null)
+    setImgPerc(0);
+    setInfo(null);
   };
 
   const handleChange = (e) => {
@@ -98,19 +93,13 @@ export default function Share() {
       <div className="container">
         <div className="top">
           <div className="left">
-            {isLoading ? (
-              "Loading"
-            ) : (
-              <>
-                <img src={data.profilePic || Avater} alt="" />
-                <input
-                  type="text"
-                  placeholder={`What's on your mind ${data.name}?`}
-                  onChange={handleChange}
-                  id="desc"
-                />
-              </>
-            )}
+            <img src={currentUser.profilePic || Avater} alt="" />
+            <input
+              type="text"
+              placeholder={`What's on your mind ${currentUser.name}?`}
+              onChange={handleChange}
+              id="desc"
+            />
           </div>
           <div className="right">
             {imgPrec > 0 && "Uploading:" + imgPrec + "%"}

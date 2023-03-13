@@ -25,7 +25,7 @@ export default function Online({ onlineUsers, setCurrentChat }) {
 
   const handleClick = async (user) => {
     try {
-      const res = await makeRequest.get(`/conversations/find/${user._id}`);
+      const res = await makeRequest.get(`/conversations/find/${currentUser._id}/${user._id}`);
       setCurrentChat(res.data);
     } catch (error) {
       console.log(error);

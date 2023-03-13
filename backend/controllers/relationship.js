@@ -19,13 +19,13 @@ const getRelationships = async (req, res) => {
 
 
 const addRelationships = async (req, res) => {
-  const token = req.cookies.acessToken;
-  if (!token) return res.status(401).json("Not verified");
+  // const token = req.cookies.acessToken;
+  // if (!token) return res.status(401).json("Not verified");
 
-  verify(token, process.env.TOKEN, async (err, userInfo) => {
-    if (err) return res.status(403).json("token is not verified");
+  // verify(token, process.env.TOKEN, async (err, userInfo) => {
+  //   if (err) return res.status(403).json("token is not verified");
 
-    const userId = userInfo.id;
+    const userId = req.params.id;
     const user = await Users.findById(req.body.userId);
     const currentUser = await Users.findById(userId);
 
@@ -41,17 +41,17 @@ const addRelationships = async (req, res) => {
     } else {
       res.status(401).send("you are already following this user");
     }
-  });
+  // });
 };
 
 const deletRelationships = async (req, res) => {
-  const token = req.cookies.acessToken;
-  if (!token) return res.status(401).json("Not verified");
+  // const token = req.cookies.acessToken;
+  // if (!token) return res.status(401).json("Not verified");
 
-  verify(token, process.env.TOKEN, async (err, userInfo) => {
-    if (err) return res.status(403).json("token is not verified");
+  // verify(token, process.env.TOKEN, async (err, userInfo) => {
+  //   if (err) return res.status(403).json("token is not verified");
 
-    const userId = userInfo.id;
+    const userId = req.params.id;
     const user = await Users.findById(req.query.userId);
     const currentUser = await Users.findById(userId);
 
@@ -67,7 +67,7 @@ const deletRelationships = async (req, res) => {
     } else {
       res.status(401).send("you are already unfollowing this user");
     }
-  });
+  // });
 };
 
 module.exports = {

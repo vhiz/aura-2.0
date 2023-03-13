@@ -2,16 +2,16 @@ import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB2XAe3JJRGDd7VpY02eyRG_dtCt6zJLKk",
-  authDomain: "video-de607.firebaseapp.com",
-  projectId: "video-de607",
-  storageBucket: "video-de607.appspot.com",
-  messagingSenderId: "941135156130",
-  appId: "1:941135156130:web:2fc78f20f0040d4ca258fb"
+  apiKey: "AIzaSyAWNFgxYWf2ar5sU1PhfAAIQTVwSvJivGg",
+  authDomain: "aura-5911c.firebaseapp.com",
+  projectId: "aura-5911c",
+  storageBucket: "aura-5911c.appspot.com",
+  messagingSenderId: "750355590368",
+  appId: "1:750355590368:web:15be9ae25b143877bab485",
 };
 
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth();
-export const provider = new GoogleAuthProvider()
+export const provider = new GoogleAuthProvider();
 export default app;

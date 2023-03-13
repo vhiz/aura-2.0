@@ -2,10 +2,10 @@ const { newConversation, getConversation, conversation } = require('../controlle
 
 const router = require('express').Router()
 
-router.post('/', newConversation)
+router.post('/:id', newConversation)
 
-router.get('/', getConversation)
+router.get('/:id', getConversation)
 
-router.get('/find/:secondId', conversation)
+router.get('/find/:id/:secondId', conversation)
 
 module.exports = router

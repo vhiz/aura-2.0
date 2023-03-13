@@ -1,37 +1,83 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { makeRequest } from "../../axios";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
 
 import "./update.scss";
+import { AuthContext } from "../../context/authContext";
+import app from "../../firebase";
 
 export default function Update({ setOpenUpdate, user }) {
-  const [cover, setCover] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState("");
+  const [cover, setCover] = useState("");
+  const [profilePerc, setProfilePerc] = useState(0);
+  const [coverPrec, setCoverPerc] = useState(0);
+  const { currentUser } = useContext(AuthContext);
+
   const [texts, setTexts] = useState({
-    email: user.email,
-    password: user.password,
-    name: user.name,
-    city: user.city,
-    website: user.website,
-    phoneno: user.phoneno,
-    username: user.username,
+    email: user?.email,
+    name: user?.name,
+    city: user?.city,
+    website: user?.website,
+    phoneno: user?.phoneno,
+    username: user?.username,
   });
 
-  const upload = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await makeRequest.post("/upload", formData);
-      return res.data;
-    } catch (error) {}
+  const uploadFile = (file, urlType) => {
+    const storage = getStorage(app);
+    const fileName = new window.Date().getTime() + file.name;
+    const storageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        urlType === "profilePic"
+          ? setProfilePerc(Math.round(progress))
+          : setCoverPerc(Math.round(progress));
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+          default:
+            break;
+        }
+      },
+      (error) => {},
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setTexts((prev) => ({ ...prev, [urlType]: downloadURL }));
+        });
+      }
+    );
   };
+  console.log(texts)
+
+  useEffect(() => {
+    cover && uploadFile(cover, "coverPic");
+  }, [cover]);
+
+  useEffect(() => {
+    profile && uploadFile(profile, "profilePic");
+  }, [profile]);
 
   const queryClient = new useQueryClient();
 
   const mutation = useMutation(
     (user) => {
-      return makeRequest.put("/users", user);
+      return makeRequest.put(`/users/${currentUser._id}`, user);
     },
     {
       onSuccess: () => {
@@ -43,30 +89,15 @@ export default function Update({ setOpenUpdate, user }) {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    let coverUrl;
-    let profileUrl;
-    let nameUpdate;
-    let emailUpdate;
-    let phonenoUpdate;
-    let websiteUpate;
-    let cityUpdate;
-    let usernameUpdate;
-
-    coverUrl = cover ? await upload(cover) : user.coverPic;
-    profileUrl = profile ? await upload(profile) : user.profilePic;
-    nameUpdate = texts.name ? texts.name : user.name;
-    emailUpdate = texts.email ? texts.email : user.email;
-    phonenoUpdate = texts.phoneno ? texts.phoneno : user.phoneno;
-    websiteUpate = texts.website ? texts.website : user.website;
-    cityUpdate = texts.city ? texts.city : user.city;
-    usernameUpdate = texts.username ? texts.username : user.username;
-    mutation.mutate({ coverPic: coverUrl, profilePic: profileUrl });
-
+    const user = {
+      ...texts,
+    };
+    mutation.mutate(user);
     setOpenUpdate(false);
   };
 
   const handleChange = (e) => {
-    setTexts((prev) => ({ ...prev, [e.target.name]: [e.target.value] }));
+    setTexts((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   return (
     <div className="update">
@@ -75,14 +106,14 @@ export default function Update({ setOpenUpdate, user }) {
         <form>
           <div className="files">
             <label htmlFor="cover">
-              <span>Cover Picture</span>
+              {coverPrec > 0 ? (
+                "Uploading:" + coverPrec + "%"
+              ) : (
+                <span>Cover Picture</span>
+              )}
               <div className="imgContainer">
                 <img
-                  src={
-                    cover
-                      ? URL.createObjectURL(cover)
-                      : "/upload/" + user.coverPic
-                  }
+                  src={cover ? URL.createObjectURL(cover) : user.coverPic}
                   alt=""
                 />
                 <CloudUploadIcon className="icon" />
@@ -96,14 +127,14 @@ export default function Update({ setOpenUpdate, user }) {
               accept="image/*"
             />
             <label htmlFor="profile">
-              <span>Profile Picture</span>
+              {profilePerc > 0 ? (
+                "Uploading:" + profilePerc + "%"
+              ) : (
+                <span>Profile Picture</span>
+              )}
               <div className="imgContainer">
                 <img
-                  src={
-                    profile
-                      ? URL.createObjectURL(profile)
-                      : "/upload/" + user.profilePic
-                  }
+                  src={profile ? URL.createObjectURL(profile) : user.profilePic}
                   alt=""
                 />
                 <CloudUploadIcon className="icon" />
@@ -117,38 +148,48 @@ export default function Update({ setOpenUpdate, user }) {
               accept="image/*"
             />
           </div>
-          {/* <label>Email</label>
-                    <input
-                        type="text"
-                        value={texts.email}
-                        name="email"
-                        onChange={handleChange}
-                    />
-                    <label>Name</label>
-                    <input
-                        type="text"
-                        value={texts.name}
-                        name="name"
-                        onChange={handleChange}
-                    />
-                    <label>Country / City</label>
-                    <input
-                        type="text"
-                        name="city"
-                        value={texts.city}
-                        onChange={handleChange}
-                    />
-                    <label>Website</label>
-                    <input
-                        type="text"
-                        name="website"
-                        value={texts.website}
-                        onChange={handleChange}
-                    />
-                    <label>Phone No</label>
-                    <input type="tel" name='phoneno' value={texts.phoneno} onChange={handleChange} />
-                    <label>Username</label>
-                    <input type="text" name="username" value={texts.username} onChange={handleChange} /> */}
+          <label>Email</label>
+          <input
+            type="text"
+            value={texts.email}
+            name="email"
+            onChange={handleChange}
+          />
+          <label>Name</label>
+          <input
+            type="text"
+            value={texts.name}
+            name="name"
+            onChange={handleChange}
+          />
+          <label>Country / City</label>
+          <input
+            type="text"
+            name="city"
+            value={texts.city}
+            onChange={handleChange}
+          />
+          <label>Website</label>
+          <input
+            type="text"
+            name="website"
+            value={texts.website}
+            onChange={handleChange}
+          />
+          <label>Phone No</label>
+          <input
+            type="tel"
+            name="phoneno"
+            value={texts.phoneno}
+            onChange={handleChange}
+          />
+          <label>Username</label>
+          <input
+            type="text"
+            name="username"
+            value={texts.username}
+            onChange={handleChange}
+          />
           <button onClick={handleClick}>Update</button>
         </form>
         <button className="close" onClick={() => setOpenUpdate(false)}>

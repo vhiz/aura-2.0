@@ -24,7 +24,7 @@ export default function Post({ post, userId }) {
 
   const likeHandeler = () => {
     try {
-      makeRequest.put(`/likes/${post._id}/like`);
+      makeRequest.put(`/likes/${post._id}/like/${currentUser._id}`);
     } catch (error) {
       console.log(error);
     }
